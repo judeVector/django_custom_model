@@ -7,6 +7,7 @@ from .models import NewUser
 # Register your models here.
 class UserAdminConfig(UserAdmin):
 
+    model = NewUser
     list_filter = ["email", "user_name", "first_name", "is_active", "is_staff"]
     search_fields = ["email", "user_name", "first_name"]
     ordering = [
@@ -34,6 +35,27 @@ class UserAdminConfig(UserAdmin):
             },
         ],
     ]
+    formfield_overrides = {
+        NewUser.about: {"widget": Textarea(attrs={"rows": 10, "cols": 40})}
+    }
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": (
+                    "email",
+                    "user_name",
+                    "first_name",
+                    "about",
+                    "password1",
+                    "password2",
+                    "is_active",
+                    "is_staff",
+                ),
+            },
+        ),
+    )
 
 
 admin.site.register(NewUser, UserAdminConfig)
